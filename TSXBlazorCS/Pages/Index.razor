@@ -1,0 +1,26 @@
+﻿@page "/"
+@using CustomComponent
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+<br/>
+
+<Component1 />
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var jsObject = await this.JSRuntime.InvokeAsync<IJSObjectReference>("helpers.getLogger");
+
+        await jsObject.InvokeVoidAsync("log", $"LOG { DateTime.Now} = OnAfterRenderAsync called.");
+
+        await jsObject.DisposeAsync();
+    }
+}
